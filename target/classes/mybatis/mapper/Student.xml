@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace：命名空间，做sql隔离 -->
+<mapper namespace="net.dfrz.mapper.StudentMapper">
+	
+	<!-- 
+		id:sql语句唯一标识
+		parameterType:指定传入参数类型（不是数据库中的类型）
+		resultType:返回结果集类型
+		#{}:占位符，如果传入的类型是基本类型（String,long,double,int,boolean,float等），那么#{}中变量名称可以任意
+	 -->
+	
+	<!-- 插入数据 -->
+	<insert id="insertStudent" parameterType="net.dfrz.entity.Student">
+		insert into t_student(stuID,name,birthday,sex) values(#{stuID},#{name},#{birthday},#{sex})
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="deleteStudentById" parameterType="string" >
+		delete from t_student where stuID = #{stuID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="updateStudentById" parameterType="net.dfrz.entity.Student">
+		update t_student set name=#{name} where stuID = #{stuID}
+	</update>
+	
+	<!-- 约定大于配置 -->
+	<!-- 查询 -->
+	<select id="selectStudentById" parameterType="string" resultType="student">
+		select * from t_student where stuID = #{stuID}
+	</select>
+	
+	<select id="selectStudentAll" parameterType="Integer" resultType="Student">
+		select * from t_student
+	</select>
+	
+</mapper>
