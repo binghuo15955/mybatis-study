@@ -2,7 +2,9 @@ package net.dfrz.test;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -16,6 +18,30 @@ import net.dfrz.entity.Student;
 import net.dfrz.mapper.StudentMapper;
 
 public class TestStudentMapper2 {
+	
+	@Test
+	public void testSelectStuByBirthday() throws Exception {
+		// 读取配置文件
+		String resource = "mybatis/config.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		// 创建sessionFactory
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+		// 创建会话
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+
+		StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+		Map<String,Date> param=new HashMap<String, Date>();
+		
+		param.put("start", new Date(119,10,1));
+		param.put("end", new Date(120,12,10));
+		
+		List<Student> student = studentMapper.selectStudentByBirthday(param);
+
+		System.out.println(student.size());
+		// 关闭会话
+		sqlSession.close();
+	}
 
 	@Test
 	public void testPageHelper() throws Exception {
@@ -71,9 +97,10 @@ public class TestStudentMapper2 {
 
 		StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 		// 创建student对象
-		Student student = new Student("s006", "阿松", new Date(), "女");
+		Student student = new Student("", "selectKey1", new Date(), "女");
 
 		studentMapper.insertStudent(student);
+		//System.out.println(student.getStuID());
 		// 提交SQL
 		sqlSession.commit();
 

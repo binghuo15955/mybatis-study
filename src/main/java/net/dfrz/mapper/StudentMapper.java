@@ -1,6 +1,8 @@
 package net.dfrz.mapper;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import net.dfrz.entity.Student;
 
@@ -13,4 +15,6 @@ public interface StudentMapper
 	int updateStudentById(Student student);
 	Student selectStudentById(String stuID);
 	List<Student> selectStudentAll();
+	List<Student> selectStudentByBirthday(Map<String, Date> param);
+	
 }

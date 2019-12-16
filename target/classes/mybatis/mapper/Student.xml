@@ -14,6 +14,9 @@
 	
 	<!-- 插入数据 -->
 	<insert id="insertStudent" parameterType="net.dfrz.entity.Student">
+		<selectKey keyProperty="stuID" resultType="String" order="BEFORE">
+			select replace(uuid(),"-","")
+		</selectKey>
 		insert into t_student(stuID,name,birthday,sex) values(#{stuID},#{name},#{birthday},#{sex})
 	</insert>
 	
@@ -37,4 +40,7 @@
 		select * from t_student
 	</select>
 	
+	<select id="selectStudentByBirthday" parameterType="Map" resultType="student">
+		select * from t_student where birthday between #{start} and #{end}
+	</select>
 </mapper>
