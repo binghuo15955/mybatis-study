@@ -14,7 +14,7 @@ public interface StudentMapper
 	int deleteStudentById(String stuID);
 	int updateStudentById(Student student);
 	Student selectStudentById(String stuID);
-	List<Student> selectStudentAll();
+	List<Student> selectStudentAll(Map<String, Object> param);
 	List<Student> selectStudentByBirthday(Map<String, Date> param);
 	Student selectStudentBirthandNameById(String stuID);
 	Map<String, Object> selectStudentBirthandName4MapById(String stuID);

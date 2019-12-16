@@ -3,8 +3,10 @@ package net.dfrz.test;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -12,7 +14,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
-import com.github.pagehelper.PageHelper;
 
 import net.dfrz.entity.Student;
 import net.dfrz.mapper.StudentMapper;
@@ -74,13 +75,32 @@ public class TestStudentMapper2 {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 
 		StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+		
+		//调用static方法
+		//PageHelper.startPage(2, 3);
 
-		PageHelper.startPage(2, 3);
-
-		List<Student> list = studentMapper.selectStudentAll();
-		for (Student student : list) {
+		//通过Map直接传递任何需要的参数
+		Map<String, Object> param = new HashMap<>();
+		
+/*		param.put("name", "UUID");
+		param.put("start", new Date(119,10,1));
+		param.put("end", new Date(120,12,10));*/
+		
+		//foreach标签set测试
+		Set<String> ids=new HashSet<String>();
+		ids.add("S002");
+		ids.add("1");
+		ids.add("3");
+		ids.add("6");
+		ids.add("37");
+		
+		param.put("ids", ids);
+		
+		List<Student> list = studentMapper.selectStudentAll(param);
+		
+/*		for (Student student : list) {
 			System.out.println(student.getStuID());
-		}
+		}*/
 		
 		sqlSession.close();
 	}

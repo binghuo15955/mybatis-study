@@ -8,7 +8,65 @@
 	-<select>
 	-parameterType
 	-resultType
-
+	
+	-resultMap(配置，属性)：作为列名映射，让一些和entity/bean类对应不上的名字，通过映射对应上名字。
+	-eg:
+		<resultMap id="StudentResultMap" type="student">
+			<result property="name" column="name1" />
+		</resultMap>
+	
+	-sql：把多个重复字段，封装在一个类似变量的sql片段里，靠id识别
+	-eg:
+		<sql id="all">stuID,name,birthday,sex</sql>
+	
+	-selectKey：多表插入时，及时拿到PK值
+	-eg:
+		<selectKey keyProperty="stuID" resultType="String"
+			order="BEFORE">
+			select replace(uuid(),"-","")
+		</selectKey>
+		
+	-if：满足则追加
+	-eg:	
+		<if test="name!=null">
+			and name LIKE CONCAT('%','${name}','%')
+		</if>
+		<if test="start!=null and end!=null">
+			and birthday between #{start} and #{end}
+		</if>
+		<if test="sex!=null">
+			and sex = #{sex}
+		</if>
+			
+	-choose,when:满足就跳出，类似switch,case
+	-eg:
+		<choose>
+			<when test="ids!=null">
+				and stuID in 
+				<foreach item="item" collection="ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</when>
+			<when test="name!=null">
+				and name LIKE CONCAT('%','${name}','%')
+			</when>
+			<when test="start!=null and end!=null">
+				and birthday between #{start} and #{end}
+			</when>
+			<when test="sex!=null">
+				and sex = #{sex}
+			</when>
+		</choose>
+		
+	-foreach
+	-eg:
+		<when test="ids!=null">
+			and stuID in 
+			<foreach item="item" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</when>
+	
 mybatis的输入：
 	基本数据类型、对象类型、Map类型
 	
