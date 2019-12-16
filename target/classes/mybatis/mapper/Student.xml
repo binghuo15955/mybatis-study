@@ -5,6 +5,13 @@
   <!-- namespace：命名空间，做sql隔离 -->
 <mapper namespace="net.dfrz.mapper.StudentMapper">
 	
+	<resultMap id="StudentResultMap" type="student">
+		<result property="name" column="name1"/>
+	</resultMap>
+	
+	<!-- sql片段，减少重复工作,相当于将这些列名存入了id这个名称中 -->
+	<sql id="all">stuID,name,birthday,sex</sql>
+	
 	<!-- 
 		id:sql语句唯一标识
 		parameterType:指定传入参数类型（不是数据库中的类型）
@@ -17,7 +24,7 @@
 		<selectKey keyProperty="stuID" resultType="String" order="BEFORE">
 			select replace(uuid(),"-","")
 		</selectKey>
-		insert into t_student(stuID,name,birthday,sex) values(#{stuID},#{name},#{birthday},#{sex})
+		insert into t_student(<include refid="all"></include>) values(#{stuID},#{name},#{birthday},#{sex})
 	</insert>
 	
 	<!-- 删除 -->
@@ -33,14 +40,23 @@
 	<!-- 约定大于配置 -->
 	<!-- 查询 -->
 	<select id="selectStudentById" parameterType="string" resultType="student">
-		select * from t_student where stuID = #{stuID}
+		select <include refid="all"></include> from t_student where stuID = #{stuID}
 	</select>
 	
 	<select id="selectStudentAll" parameterType="Integer" resultType="Student">
-		select * from t_student
+		select <include refid="all"></include> from t_student
 	</select>
 	
 	<select id="selectStudentByBirthday" parameterType="Map" resultType="student">
-		select * from t_student where birthday between #{start} and #{end}
+		select <include refid="all"></include> from t_student where birthday between #{start} and #{end}
+	</select>
+	
+	<!-- resultType="student"时，列名不匹配无法封装进对象 -->
+	<select id="selectStudentBirthandNameById" parameterType="string" resultMap="StudentResultMap">
+		select name as name1,birthday from t_student where stuID=#{stuID}
+	</select>
+	<!-- 下面这句resultType="map",也相当于上面这句话resultMap="StudentResultMap"(推荐) -->
+	<select id="selectStudentBirthandName4MapById" parameterType="string" resultMap="map">
+		select name as name1,birthday from t_student where stuID=#{stuID}
 	</select>
 </mapper>

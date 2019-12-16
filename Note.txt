@@ -1,2 +1,16 @@
+1、最小化环境：引入类库（mybatis log4j 数据库类库mysql ojdbcX）  
+	配置文件（涉及数据库连接、别名）
+	
+2.映射文件
+	-<insert>
+	-<delete>
+	-<update>
+	-<select>
+	-parameterType
+	-resultType
+
 mybatis的输入：
-	如果要传入多个参数，使用Map传输。
+	基本数据类型、对象类型、Map类型
+	
+输出：
+	基本数据类型、对象类型、Map类型

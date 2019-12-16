@@ -20,6 +20,27 @@ import net.dfrz.mapper.StudentMapper;
 public class TestStudentMapper2 {
 	
 	@Test
+	public void testselectStudentBirthandNameById() throws Exception {
+		// 读取配置文件
+		String resource = "mybatis/config.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		// 创建sessionFactory
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+		// 创建会话
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+
+		StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+
+		//侧重于返回为Map，避免了返回值为空时，浪费客户端流量
+		Student student = studentMapper.selectStudentBirthandNameById("ec96fcd41fb011ea90d154ee7594d3a7");
+		Map map=studentMapper.selectStudentBirthandName4MapById("ec96fcd41fb011ea90d154ee7594d3a7");
+
+		// 关闭会话
+		sqlSession.close();
+	}
+	
+	@Test
 	public void testSelectStuByBirthday() throws Exception {
 		// 读取配置文件
 		String resource = "mybatis/config.xml";
@@ -97,7 +118,7 @@ public class TestStudentMapper2 {
 
 		StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
 		// 创建student对象
-		Student student = new Student("", "selectKey1", new Date(), "女");
+		Student student = new Student("", "include&sql", new Date(), "女");
 
 		studentMapper.insertStudent(student);
 		//System.out.println(student.getStuID());
