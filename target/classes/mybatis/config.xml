@@ -4,47 +4,4 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	
-	<!-- 引入外部资源文件 -->
-	<properties resource="mybatis/db/mysql.properties"></properties>
-	
-	<!-- 设置entity\bean包扫描,包下的所有entity类默认首字母小写后调用 -->
-	<typeAliases>
-	<!-- 下面两个都可以对应mapper/Student.xml的student这个类 -->
-		<!-- <typeAlias type="net.dfrz.entity.Student"/> -->
-		<package name="net.dfrz.entity" />
-	</typeAliases>
-	
-	<!-- 分页的第三方插件 -->
-	<plugins>
-		<plugin interceptor="com.github.pagehelper.PageHelper">
-			<property name="dialect" value="mysql" />
-			<property name="offsetAsPageNum" value="false" />
-			<property name="rowBoundsWithCount" value="true" /><!-- rowBoundsWithCount:若为TRUE，会查询总item数目 -->
-			<property name="pageSizeZero" value="true" />
-			<property name="reasonable" value="true" /><!-- reasonable:若为TRUE，用户输入页码小于1会定位到第一页，大于最大页数会定位到最后一页。 -->
-			<property name="supportMethodsArguments" value="false" />
-			<property name="returnPageInfo" value="none" />
-		</plugin>
-	</plugins>
-
-	<!-- 配置信息 -->
-	<environments default="development">
-		<environment id="development">
-			<transactionManager type="JDBC" />
-			<dataSource type="POOLED">
-				<!-- 配置连接信息 -->
-				<property name="driver" value="${jdbc.driverClass}" />
-				<property name="url"
-					value="${jdbc.url}" />
-				<property name="username" value="${jdbc.username}" />
-				<property name="password" value="${jdbc.password}" />
-			</dataSource>
-		</environment>
-	</environments>
-
-	<!-- 配置映射文件：用来配置SQL语句和结果及类型等 -->
-	<mappers>
-		<mapper resource="mybatis/mapper/Student.xml" />
-		<!-- <mapper class="net.dfrz.mapper.StudentMapper"/> -->
-	</mappers>
 </configuration>
