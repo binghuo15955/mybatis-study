@@ -1,9 +1,14 @@
 package net.dfrz.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Student
+public class Student implements Serializable 
 {
+	/**
+	 * 序列化设置for二级缓存
+	 */
+	private static final long serialVersionUID = 1L;
 	private String stuID;
 	private String name;
 	private Date birthday;

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace：命名空间，做sql隔离 -->
 <mapper namespace="net.dfrz.mapper.StudentMapper">
-
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/><!-- 配置二级缓存 -->
 	<resultMap id="StudentResultMap" type="student">
 		<result property="name" column="name1" />
 	</resultMap>
@@ -41,7 +41,7 @@
 	<!-- 约定大于配置 -->
 	<!-- 查询 -->
 	<select id="selectStudentById" parameterType="string"
-		resultType="student">
+		resultType="student" ><!-- useCache="false" -->
 		select
 		<include refid="all"></include>
 		from t_student where stuID = #{stuID}

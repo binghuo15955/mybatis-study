@@ -9,8 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
-import com.github.pagehelper.PageHelper;
-
 import net.dfrz.entity.Student;
 
 public class TestStudentMapper {
@@ -26,9 +24,16 @@ public class TestStudentMapper {
 		// 创建会话
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		
-		Student student=sqlSession.selectOne("selectStudentById","s002");
-		
+//		//1.同一个session多次查询
+		System.out.println("------第一次查询--------");
+		Student student = sqlSession.selectOne("selectStudentById", "s002");
 		System.out.println(student.getStuID());
+		sqlSession.close();
+		System.out.println("------第2次查询--------");
+		sqlSession=sqlSessionFactory.openSession();
+		student = sqlSession.selectOne("selectStudentById", "s002");// 不会重复调用了，已经存在session中
+		System.out.println(student.getStuID());
+
 		// 关闭会话
 		sqlSession.close();
 	}
@@ -47,11 +52,11 @@ public class TestStudentMapper {
 		// 创建student对象
 		Student student = new Student("s007", "asdf", new Date(), "女");
 
-		//studentMapper.insertStudent(student);
-		sqlSession.insert("insertStudent", student);	
+		// studentMapper.insertStudent(student);
+		sqlSession.insert("insertStudent", student);
 		// 提交SQL
 		sqlSession.commit();
-		
+
 		sqlSession.close();
 
 	}

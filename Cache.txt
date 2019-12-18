@@ -1,0 +1,40 @@
+mybatis的缓存技术：
+	a)一级缓存  session级别的缓存(如果session被关闭则缓存数据丢失)，无开发价值
+		i.mapper的配置文件增加<cache />
+	b)二级缓存  把数据存储在一个缓存区，如果用户需要的已经存在，直接通过session传递给用户。如果满了，有最不常用剔除机制，腾出空间。
+		-mybatis自带缓存
+			i.在映射文件中增加缓存配置
+				<cache /><!-- 配置二级缓存 -->
+			ii.映射文件对应的实体对象需可序列化 public class Resource implements Serializable
+			iii.指定查询SQL是否使用查询缓存
+				<select id="selectResource" parameterType="int" resultMap="resourceMap" useCache="false">
+					select 
+					<include refid="res_base_column"></include> 
+					from t_resource res where res.resNO = #{resNO} 
+				</select>
+		-外部缓存产品ehcache
+			i.引入类库
+				<!-- https://mvnrepository.com/artifact/org.mybatis.caches/mybatis-ehcache -->
+				<dependency>
+					<groupId>org.mybatis.caches</groupId>
+					<artifactId>mybatis-ehcache</artifactId>
+					<version>1.1.0</version>
+				</dependency>
+			ii.修改映射文件
+				<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+			iii.增加ehcache配置文件 resources/ehcache.xml
+				<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+				    <defaultCache
+				            maxElementsInMemory="10000"
+				            eternal="true"
+				            timeToIdleSeconds="120"
+				            timeToLiveSeconds="120"
+				            maxElementsOnDisk="10000000"
+				            diskExpiryThreadIntervalSeconds="120"
+				            memoryStoreEvictionPolicy="LRU">
+				        <persistence strategy="localTempSwap"/>
+				    </defaultCache>
+				</ehcache>
+	c)三级缓存（业务对象缓存）
+		-二级缓存区拿到原始数据后，加工完放入三级缓存。但是要自己写map来对应，少用！
+		
