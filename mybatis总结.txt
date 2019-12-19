@@ -1,0 +1,17 @@
+mybatis总结
+
+1.应用场景：DAO-->ORM 主要解决数据的读取与存储
+
+2.如何使用？
+	-i、配置文件-->spring.xml(datasource-->sqlsessionfactory\事务处理-->scanMapper-->Mapper接口-->Service调用)
+	-ii、映射文件-->增删改查 resultMap sql if where foreach choose when selectKey
+	
+3.什么是mybatis？
+	-前身ibatis
+	
+4.级联问题（多表的连接查询+resultMap）/</association>：
+延迟加载（要用的时候数据再进入内存）
+
+5.javaConfig
+
+6.mybatis-plus(相互融合，作为一种补充插件的形式，解决所有的单表操作问题)

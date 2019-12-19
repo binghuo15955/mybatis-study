@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，做sql隔离 -->
+<mapper namespace="net.dfrz.mapper.ScoresMapper">
+
+	<!-- 查询 -->
+	
+	<!-- 获取所有的学生 -->
+	<select id="getScoresBystuID" parameterType="string"
+		resultType="scores" >
+		select t_scores.id,t_scores.math		
+		from t_scores
+		<if test="value!=null">
+			 where t_scores.stuID = #{stuID}
+		 </if>
+	</select>
+	
+
+
+</mapper>

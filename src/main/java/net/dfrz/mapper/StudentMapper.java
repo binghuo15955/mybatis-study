@@ -18,4 +18,8 @@ public interface StudentMapper
 	List<Student> selectStudentByBirthday(Map<String, Date> param);
 	Student selectStudentBirthandNameById(String stuID);
 	Map<String, Object> selectStudentBirthandName4MapById(String stuID);
+	
+	Student selectStudentByIdWithScores(String stuID);
+	List<Student> getStudentWithScores(Map<String, Object> params);
+	List<Student> getStudents(Map<String, Object> params);
 }
